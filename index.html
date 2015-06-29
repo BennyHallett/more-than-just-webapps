@@ -4,9 +4,9 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Hello Elixir | An introduction to the Elixir language by Benny Hallett</title>
+		<title>More than just webapps | Benny Hallett</title>
 
-		<meta name="description" content="An intro to the Elixir language by Benny Hallett">
+		<meta name="description" content="More than just webapps | A talk about the other things Ruby is good for">
 		<meta name="author" content="Benny Hallett">
 
 		<meta name="apple-mobile-web-app-capable" content="yes" />
@@ -40,249 +40,150 @@
 			<!-- Any section element inside of this container is displayed as a slide -->
       <div class="slides">
 				<section>
-					<h1>Hello Elixir</h1>
-          <h3>Benny Hallett (@bennyhallett)</h3>
-          <pre><code data-trim contenteditable>
-["hello", "elixir"]
-|> Enum.map(&String.capitalize/1)
-|> Enum.join(" ")
-|> IO.puts
-
-# => Hello Elixir
-          </code></pre>
+					<h1>More than just webapps</h1>
+          <h5>@bennyhallett</h5>
+          <h5>@newcastleruby</h5>
         </section>
 
         <section>
-          <h1>What is Elixir?</h1>
+          <h2>Rails is awesome</h2>
           <ul>
-            <li>Functional</li>
-            <li>Dynamic</li>
-            <li>Scalable</li>
-            <li>Built on top of Erlang</li>
+            <li>All-in-one framework</li>
+            <li>Configurable</li> <!-- Shadow Stack -->
+            <li>Massive ecosystem</li>
+            <li>Fast to launch</li>
+            <li>Technical debt isn't crippling</li>
           </ul>
         </section>
 
         <section>
-        <h2>Things built in Erlang that you may or may not know of</h2>
-        <ul>
-          <li>RabbitMQ</li>
-          <li>CouchDB</li>
-          <li>WhatsApp (32 devs, 50 billion messages/day)</li>
-          <li>Call of Duty: Black Ops servers</li>
-          <li>Facebook Chat*</li>
-        </ul>
-        </section>
-
-
-        <section>
-        <h1>Why do I like it?</h1>
-        <ul>
-          <li>New take on proven technology</li>
-          <li>Makes functional accessible</li>
-          <li>Lots of opportunities to contribute</li>
-          <li>Massively concurrent. Possibilty of doing large calculations fast</li>
-          <li>High availability, automatic recovery is easy</li>
-        </ul>
+          <h2>What else is Ruby good for?</h2>
+          <ul>
+            <li>Scripting</li>
+            <li>Command Line Apps</li>
+            <li>Games</li>
+            <li>Client apps</li>
+            <li>Webapps (without Rails)</li>
+          </ul>
         </section>
 
         <section>
-        <h1>Let's take a look</h1>
+          <h1>Scripting</h1>
         </section>
 
         <section>
-        <h2>All the primitive data types you'd expect</h2>
-        <pre><code data-trim contenteditable>
-1                   # integer
-2.3                 # float
-false               # boolean
-:atom               # atom (a symbol in Ruby)
-"string"            # string
-        </code></pre>
+          <h2>General Automation</h2>
+
+          <ul>
+            <li>Parsing + Processing files</li>
+            <li>Deployments</li>
+            <li>Scheduled jobs</li>
+          </ul>
         </section>
 
         <section>
-        <h2>Data Structures</h2>
-        <pre><code data-trim contenteditable>
-[1, 2, 3]           # list
-{4, 5, 6}           # tuple
-%{a: 1, b: 2}       # map
-%User{name: "Bob"}  # struct
-        </code></pre>
-
+          ???
         </section>
 
         <section>
-        <h2>Named and Anonymous Functions</h2>
-        <pre><code data-trim contenteditable>
-defmodule Case do
-  def uppercase(param)
-    to_upper = fn(s) -> String.upcase(s) end
-    to_upper.(param)
-  end
-end
-
-Case.uppercase("my name")
-
-# => "MY NAME"
-        </code></pre>
+          <h1>Command Line Apps</h1>
         </section>
 
         <section>
-        <h2>Pipelining</h2>
-<pre><code data-trim contenteditable>
-IO.puts(
-  Enum.join(
-    Enum.map(["hello", "elixir"], &String.captialize/1), " "))
+          <h2>Taking scripting further</h2>
 
-# => Hello Elixir
-        </code></pre>
-        <p>vs</p>
-        <pre><code data-trim contenteditable>
-["hello", "elixir"]
-|> Enum.map(&String.capitalize/1)
-|> Enum.join(" ")
-|> IO.puts
-
-# => Hello Elixir
-        </code></pre>
+          <ul>
+            <li>Sharable, Usable tools</li>
+            <li>UNIX Philosophy</li>
+            <li>Plain text via STDIN, STDOUT & STDERR</li>
+            <li>Use ARGF to allow use of pipes</li>
+            <li>Return codes to play nice with others</li>
+            <li>Make use of our favourite gems</li>
+          </ul>
         </section>
 
         <section>
-        <h2>Pattern Matching</h2>
-        <p>The = operator is match, rather than assign</p>
-        <pre><code data-trim contenteditable>
-{ :ok, value } = { :ok, 42 }
-value
+          <h2>Powerful Option Parsing</h2>
 
-# => 42
-
-{ :ok, value } = { :error, 42 }
-** (MatchError) no match of right hand side value: {:error, 42}
-        </code></pre>
-
-        <pre><code data-trim contenteditable>
-[head|tail] = [1, 2, 3, 4]
-head
-
-# => 1
-
-tail
-
-# => [2, 3, 4]
-        </code></pre>
+          <ul>
+            <li>OptionParser (std lib)</li>
+            <li>Trollop</li>
+          </ul>
         </section>
 
         <section>
-        <h2>Pattern Matching: Multiple function heads</h2>
-        <pre><code data-trim contenteditable>
-defmodule AppConfiguration do
-  def load do
-    "~/.config"
-    |> File.read
-    |> parse
-  end
+          <h2>Command based applications</h2>
+          <p>Think git, bundler or jekyll</p>
 
-  defp parse({ :ok, contents }), do: contents |> Yaml.parse
-  defp parse({ :error, :enoent }), do: %{ default: "config" }
-end
-        </code></pre>
+          <ul>
+            <li>GLI</li>
+            <li>Thor</li>
+          </ul>
         </section>
 
         <section>
-        <h2>What would that look like in Ruby?</h2>
-        <pre><code data-trim contenteditable>
-module AppConfiguration
-  def load
-    config_file = '~/.config'
-    return { default: 'config' } unless File.exist?(config_file)
+          <h2>Deploy via RubyGems</h2>
 
-    Yaml.parse File.read(config_file)
-  end
-end
-        </code></pre>
+          <code><pre>
+
+ $ gem install awesome_cli
+
+ $ awesome_cli --file /path/to/file
+          </pre></code>
         </section>
 
         <section>
-        <h2>And how about C#?</h2>
-        <pre><code data-trim contenteditable>
-???
-        </code></pre>
+          <h2>Tool building approach</h2>
+
+          <ul>
+            <li>Small, single-focus library</li>
+            <li>Clean programmable API</li>
+            <li>Simple, thin command line wrapper</li>
+            <li>Web frontend once proven</li>
+            <li>Or combined into other apps</li>
+          </ul>
         </section>
 
         <section>
-        <h2>Metaprogramming</h2>
-        <h3>A simple router DSL</h3>
-        <pre><code data-trim contenteditable>
-defmodule SimpleRouter do
-  defmacro get(path, f), do: compile_route(:get, path, f)
-  defmacro put(path, f), do: compile_route(:put, path, f)
-  defmacro post(path, f), do: compile_route(:post, path, f)
-
-  def compile_route(method, path, f) do
-    quote do
-      def _route(method, unquote(path |> String.split("/"))) do
-        unquote(f)
-      end
-    end
-  end
-end
-        </code></pre>
+          <h1>Games</h1>
         </section>
 
         <section>
-        <h2>Metaprogramming</h2>
-        <h3>Router usage</h3>
-        <pre><code data-trim contenteditable>
-defmodule MyRouter do
-  use SimpleRouter
-
-  get 'api/people', MyApp.Api.get_people
-  post 'api/people', MyApp.Api.add_person
-end
-        </code></pre>
+          <h2>Maybe not AAA quality ...</h2>
+          <h4>... but good for learning</h4>
         </section>
 
         <section>
-        <h2>Distribution</h2>
-        <pre><code data-trim contenteditable>
-Node.connect :"other_node@host"
-say_hello = fn -> IO.puts("Hello Other Node") end
-spawn(:"other_node@host", say_hello)
-        </code></pre>
+          <h2>Clones to learn from</h2>
+
+          <ul>
+            <li>Breakout</li>
+            <li>Tetris</li>
+            <li>Mario</li>
+          </ul>
         </section>
 
         <section>
-        <h2>Open Telecom Platform (OTP)</h2>
-        <ul>
-          <li>Supervision trees</li>
-          <li>Distributed database server</li>
-          <li>Hot swapping of code</li>
-          <li>GenServer, GenFSM, GenTCP, etc</li>
-        </ul>
+          <h2>Here's one I prepared earlier</h2>
+          <p>http://github.com/bennyhallett/breakout</p>
+
+          <br />
+          <code><pre>$ gem install breakout</pre></code>
         </section>
 
         <section>
-        <h2>Latest techniques baked into the Erlang VM</h2>
-        <ul>
-          <li>Microservices => OTP Applications</li>
-          <li>Zero Downtime Deploys => Hot Swapping</li>
-          <li>Service Discovery</li>
-        </ul>
-        <pre><code data-trim contenteditable>
-:global.whereis_name :service_im_after
-        </code></pre>
+          <h1>Other web frameworks</h1>
+
+          <p>What if you don't want or need Rails?</p>
         </section>
 
         <section>
-        <h2>Tools and Frameworks</h2>
-        <ul>
-          <li>Mix => Rake and Bundler</li>
-          <li>Hex => Gem</li>
-          <li>ExUnit => Unit Testing</li>
-          <li>Ecto => Database DSL</li>
-          <li>Phoenix => Web Framework (MVC + Channels)</li>
-          <li>Plug => HTTP Pipeline (Rack, OWIN, WSGI)</li>
-        </ul>
+          <ul>
+            <li>Lotus</li>
+            <li>Volt</li>
+            <li>Padrino</li>
+            <li>Sinatra</li>
+          </ul>
         </section>
 
 			</div>

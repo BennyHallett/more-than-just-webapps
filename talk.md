@@ -14,9 +14,6 @@
   * use all your favourite gems
   * Our approach at work: library with thin CLI wrapper
   * Deployment via gem
-* Client apps
-  * Not really Rubys strength
-  * Do a simple demo with that ui framework. Is it Shoes?
 * Games using that games framework
   * Make a simple game (breakout, doesn't need to be polished)
   * Show some code
