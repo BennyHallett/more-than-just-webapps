@@ -14,6 +14,7 @@
   * use all your favourite gems
   * Our approach at work: library with thin CLI wrapper
   * Deployment via gem
+  * Command Registration Pattern
 * Games using that games framework
   * Make a simple game (breakout, doesn't need to be polished)
   * Show some code

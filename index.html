@@ -46,23 +46,11 @@
         </section>
 
         <section>
-          <h2>Rails is awesome</h2>
-          <ul>
-            <li>All-in-one framework</li>
-            <li>Configurable</li> <!-- Shadow Stack -->
-            <li>Massive ecosystem</li>
-            <li>Fast to launch</li>
-            <li>Technical debt isn't crippling</li>
-          </ul>
-        </section>
-
-        <section>
           <h2>What else is Ruby good for?</h2>
           <ul>
             <li>Scripting</li>
             <li>Command Line Apps</li>
             <li>Games</li>
-            <li>Client apps</li>
             <li>Webapps (without Rails)</li>
           </ul>
         </section>
@@ -82,7 +70,20 @@
         </section>
 
         <section>
-          ???
+          <code><pre>
+config = {}
+File.readlines('server.config') do |line|
+  parts = line.chomp.split(',')
+  config[parts.first] = parts.last # config[server_name] == value
+end
+
+config.keys.each do |server|
+  Net::SSH(server, user: 'me', password: 'superSecret') do |ssh| # use ssh keys instead
+    actual = ssh.exec!('cat /tmp/config.file | grep "thing" | cut -f 2')
+    puts "Value incorrect for #{server}" if actual != config[server]
+  end
+end
+          </pre></code>
         </section>
 
         <section>
@@ -109,6 +110,40 @@
             <li>OptionParser (std lib)</li>
             <li>Trollop</li>
           </ul>
+          </section>
+
+        <section>
+        <h2>OptionParser</h2>
+
+        <code><pre>
+require 'optparse'
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: example.rb [options]"
+
+  opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
+    options[:verbose] = v
+  end
+end.parse!
+
+puts "Hello"
+puts "Here is some info you may not need" if options[:verbose]
+        </pre></code>
+        </section>
+
+        <section>
+        <h2>Trollop</h2>
+        <code><pre>
+require 'trollop'
+  opts = Trollop::options do
+    opt :monkey, "Use monkey mode" # flag --monkey, default false
+    opt :name, "Monkey name", :type => :string # string --name [s], default nil
+    opt :num_limbs, "Number of limbs", :default => 4 # integer --num-limbs [i], default to 4
+  end
+
+  p opts # a hash: { :monkey=>false, :name=>nil, :num_limbs=>4, :help=>false }
+        </code></pre>
         </section>
 
         <section>
@@ -119,6 +154,48 @@
             <li>GLI</li>
             <li>Thor</li>
           </ul>
+        </section>
+
+        <section>
+          <h2>GLI</h2>
+          <code><pre>
+require 'gli'
+require 'hacer'
+include GLI::App
+
+program_desc 'A simple todo list'
+
+flag [:t,:tasklist], :default_value => File.join(ENV['HOME'],'.todolist')
+
+pre do |global_options,command,options,args|
+  $todo_list = Todolist.new(global_options[:tasklist])
+end
+
+command :add do |c|
+  c.action do |global_options,options,args|
+    $todo_list.create(args)
+  end
+end
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Thor</h2>
+          <code><pre>
+require 'thor'
+
+class MyCLI < Thor
+  desc "hello NAME", "say hello to NAME"
+  def hello(name)
+    puts "Hello #{name}"
+  end
+end
+
+MyCLI.start(ARGV)
+
+$ cli hello "Ruby Newcastle"
+=> Hello Ruby Newcastle
+          </pre></code>
         </section>
 
         <section>
@@ -145,12 +222,57 @@
         </section>
 
         <section>
+          <h2>Command Registration Pattern</h2>
+          <code><pre>
+class Command
+  class << self
+
+    def subclasses
+      @subclasses ||= {}
+    end
+
+    def inherited(base)
+      subclasses[base.command_name] = base
+      super(base)
+    end
+
+    def find(name)
+      subclasses[name]
+    end
+  end
+end
+          </pre></code>
+        </section>
+
+        <section>
+        <code><pre>
+class HelloCommand < Command
+  def self.command_name
+    'hello'
+  end
+
+  def self.run
+    puts "Hello"
+  end
+end
+        </pre></code>
+        </section>
+
+        <section>
+        <code><pre>
+Command.find('hello').run
+        </pre></code>
+        </section>
+
+
+        <section>
           <h1>Games</h1>
         </section>
 
         <section>
           <h2>Maybe not AAA quality ...</h2>
           <h4>... but good for learning</h4>
+          <p>Use the <em>Gosu</em> gem.</p>
         </section>
 
         <section>
@@ -165,10 +287,7 @@
 
         <section>
           <h2>Here's one I prepared earlier</h2>
-          <p>http://github.com/bennyhallett/breakout</p>
-
-          <br />
-          <code><pre>$ gem install breakout</pre></code>
+          <p>http://github.com/bennyhallett/tilebuster</p>
         </section>
 
         <section>
